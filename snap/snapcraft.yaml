@@ -1,0 +1,30 @@
+name: rpi3-gpio-example
+version: '0.1'
+summary: Example on how to use GPIO pins on an rpi3 using python.
+description: |
+  Example on how to use GPIO pins on an rpi3 using python.
+  This example contains both a regular output command and a daemon 
+  waiting for an interrupt.
+
+grade: devel
+confinement: strict
+
+apps:
+  output:
+    command: bin/outputd
+    plugs: [gpio-memory-control]
+
+  interrupt:
+    command: bin/interruptd
+    daemon: simple
+    plugs: [gpio-memory-control]
+
+parts:
+  scripts:
+    plugin: dump
+    source: src
+
+  gpio-lib:
+    plugin: python
+    python-version: python3
+    python-packages: [RPi.GPIO]

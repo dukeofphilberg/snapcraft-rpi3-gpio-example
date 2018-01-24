@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+
+import RPi.GPIO as GPIO
+import syslog
+import time
+
+INTERRUPT_PIN = 1
+DEBOUNCE_TIME = 2
+
+# Set up INTERRUPT_PIN as input, and pull up
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(INTERRUPT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+while True:
+
+    # Wait for a falling edge, with a debounce
+    while GPIO.input(INTERRUPT_PIN) == 1:
+      GPIO.wait_for_edge(INTERRUPT_PIN, GPIO.FALLING)
+      time.sleep(DEBOUNCE_TIME)
+
+    # Wait for a rising edge
+    GPIO.wait_for_edge(INTERRUPT_PIN, GPIO.RISING)
+
+    # Log
+    syslog.syslog(syslog.LOG_NOTICE, "Interrupt triggered!")

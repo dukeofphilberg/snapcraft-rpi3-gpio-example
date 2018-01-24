@@ -1,0 +1,8 @@
+parts/
+prime/
+stage/
+build/
+*.snap
+__pycache__
+.snapcraft
+.vscode
